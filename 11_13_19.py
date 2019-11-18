@@ -59,6 +59,14 @@ class linkedlist: #<-- base case always depends on definition of function (can b
             self = self.next
         return count
 
+    # def __eq__(self, other):
+    #     while self != None or other != None:
+    #         if self.num != other.num:
+    #             return False
+    #         self = self.next
+    #         other = other.next
+    #     return True if self == None and other == None else False
+
     def recursivelen(self): #using recursion, find len(self)
         if self.next == None: #<-- base case with 1 element in self
             return 1
@@ -78,3 +86,40 @@ class linkedlist: #<-- base case always depends on definition of function (can b
             return self
         else:
             return self.next.Linsert(insertion)
+
+    def lsearch(self, target): # returns index position
+        if self.num == target and self.next == None:
+            return 0
+        elif self.num == target and self.next != None:
+            return 0
+        elif self.num != target and self.next != None:
+            return 1 + self.next.lsearch(target)
+
+    def lmodify(self, target, modification): 
+        if self.num == target and self.next == None:
+            self.num = modification
+            # return 0
+        elif self.num == target and self.next != None:
+            self.num = modification
+            # return 0
+        elif self.num != target and self.next != None:
+            # return 1 + self.next.lmodify(target, modification)
+            self.next.lmodify(target, modification)
+
+    def ldelete(self, target):
+        if self.num == target and self.next == None:
+            self.num = None 
+            # self.next = ????
+        elif self.num == target and self.next != None:
+            self.num = None
+            # return 0
+        elif self.num != target and self.next != None:
+            self.next.ldelete(target)
+
+lst = linkedlist(1, linkedlist(9, linkedlist(2, linkedlist(10, linkedlist(5, None)))))
+otherlst = linkedlist(1, linkedlist(9, linkedlist(2, linkedlist(10, linkedlist(5, None)))))
+
+if otherlst == lst:
+    print('true')
+else:
+    print('false')
