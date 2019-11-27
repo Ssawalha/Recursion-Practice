@@ -48,7 +48,7 @@
 
 # if we change the definition to:
 class linkedlist: #<-- base case always depends on definition of function (can be 0 or 1 or whatever function says (cant be broken down further))
-    def __init__(self, num, next):
+    def __init__(self, num, next = None):
         self.num = num
         self.next = next
 
@@ -59,19 +59,21 @@ class linkedlist: #<-- base case always depends on definition of function (can b
             self = self.next
         return count
 
-    # def __eq__(self, other):
-    #     while self != None or other != None:
-    #         if self.num != other.num:
-    #             return False
-    #         self = self.next
-    #         other = other.next
-    #     return True if self == None and other == None else False
+    def __eq__(self, other):
+        if self is None and other is None:
+            return True
+        elif self is None or other is None:
+            return False
+        elif self.num != other.num:
+            return False
+        else:
+            return self.next == other.next
 
     def recursivelen(self): #using recursion, find len(self)
         if self.next == None: #<-- base case with 1 element in self
             return 1
         else: 
-            return 1 + len(self.next) # <--recursive case with more than 1 element in self
+            return 1 + self.next.recursivelen() # <--recursive case with more than 1 element in self
 
     def Lmax(self): #<--recursive max function
         if self.next == None:
@@ -79,23 +81,43 @@ class linkedlist: #<-- base case always depends on definition of function (can b
         else: 
             return max(self.num, self.next.Lmax())
     
-    def Linsert(self, insertion): #<-- recursive insert function 
-        #                ^(what is being inserted)
-        if self.next == None:
-            self.next = linkedlist(insertion, None)
+    def Linsert(self, index, insertion): #<-- recursive insert function 
+        #                       ^(what is being inserted)
+        if index == 0:
+            new_node = linkedlist(insertion)
+            new_node.next = self
+            self = new_node
+            return self
+        elif index == 1:
+            new_node = linkedlist(insertion)
+            new_node.next = self.next
+            self.next = new_node
             return self
         else:
-            return self.next.Linsert(insertion)
+            self.next.Linsert(index - 1, insertion)
 
-    def lsearch(self, target): # returns index position
-        if self.num == target and self.next == None:
-            return 0
-        elif self.num == target and self.next != None:
-            return 0
-        elif self.num != target and self.next != None:
-            return 1 + self.next.lsearch(target)
+    # def lsearch(self, target): # returns index position ##WORKS BUT doesnt return -1 if not found
+    #     if self.num == target and self.next == None:
+    #         return 0
+    #     elif self.num == target and self.next != None:
+    #         return 0
+    #     elif self.num != target and self.next != None:
+    #         return 1 + self.next.lsearch(target)
 
-    def lmodify(self, target, modification): 
+    def isTarget(self, target, index):
+        if self.num != target and self.next == None:
+            return -1
+        elif self.num == target:
+            return index
+        else:
+            return self.next.isTarget(target, index + 1)
+    
+
+    def lsearch(self, target): #returns index position if found / -1 if not 
+        return self.isTarget(target, 0)
+        
+
+    def lmodify(self, target, modification): # return new list 
         if self.num == target and self.next == None:
             self.num = modification
             # return 0
@@ -106,20 +128,31 @@ class linkedlist: #<-- base case always depends on definition of function (can b
             # return 1 + self.next.lmodify(target, modification)
             self.next.lmodify(target, modification)
 
-    def ldelete(self, target):
+    def ldelete(self, target): # return self is wrong??
         if self.num == target and self.next == None:
-            self.num = None 
-            # self.next = ????
-        elif self.num == target and self.next != None:
-            self.num = None
-            # return 0
-        elif self.num != target and self.next != None:
+            self = None
+        elif self.num != target and self.next == None:
+            pass
+        elif self.next.num == target:
+            self.next = self.next.next
+        else:
             self.next.ldelete(target)
 
-lst = linkedlist(1, linkedlist(9, linkedlist(2, linkedlist(10, linkedlist(5, None)))))
-otherlst = linkedlist(1, linkedlist(9, linkedlist(2, linkedlist(10, linkedlist(5, None)))))
+    def traverse(self):
+        pass # return list in string format '[0, 1, 2, 5]'
 
-if otherlst == lst:
-    print('true')
-else:
-    print('false')
+    def add_to_end(self, addition):
+        pass # append linkedlist to end  
+
+# lst = linkedlist(1, linkedlist(2, linkedlist(0, None)))
+# lst2 = linkedlist(1, linkedlist(2, linkedlist(3, None)))
+lst3 = linkedlist(2, None)
+lst2 = linkedlist(2, linkedlist(1, None))
+# lst2.Linsert(1, 2)
+lst2.ldelete(1)
+
+print(lst2 == lst3)
+
+# print(lst2.Lmax())
+# print(lst2.recursivelen())
+# print(lst2.lsearch(-5))
