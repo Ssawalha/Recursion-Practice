@@ -138,20 +138,28 @@ class linkedlist: #<-- base case always depends on definition of function (can b
         else:
             self.next.ldelete(target)
 
-    def traverse(self):
-        pass # return list in string format '[0, 1, 2, 5]'
+    def traverse(self, repre = '['):
+        # return list in string format '[0, 1, 2, 5]'
+        if self.next != None:
+            repre += str(self.num)
+            repre += ', '
+            return self.next.traverse(repre)
+        elif self.next == None:
+            repre += str(self.num)
+            repre += ']'
+            return repre
 
     def add_to_end(self, addition):
         pass # append linkedlist to end  
 
 # lst = linkedlist(1, linkedlist(2, linkedlist(0, None)))
-# lst2 = linkedlist(1, linkedlist(2, linkedlist(3, None)))
+lst2 = linkedlist(1, linkedlist(2, linkedlist(3, None)))
 lst3 = linkedlist(2, None)
-lst2 = linkedlist(2, linkedlist(1, None))
+# lst2 = linkedlist(2, linkedlist(1, None))
 # lst2.Linsert(1, 2)
-lst2.ldelete(1)
+# lst2.ldelete(1)
 
-print(lst2 == lst3)
+print(lst2.traverse())
 
 # print(lst2.Lmax())
 # print(lst2.recursivelen())

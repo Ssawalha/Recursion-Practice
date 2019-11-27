@@ -13,7 +13,7 @@ class Node:
 # it is O of n ( can we skip any of the elements, or going over anything twice. (answer for both is No so we can assume it is O of N))
 
 # how do we make it be O of 1 or constant run time?
-
+# see NodeConstant self.count
 class NodeConstant:
     def __init__(self, num, next): 
         self.num = num
@@ -42,7 +42,6 @@ class TreeNode: #binary tree
         self.num = num
         self.left = left
         self.right = right
-
 
         if self.left == None and self.right == None:
             self.count = 1
@@ -87,3 +86,4 @@ class TreeNode: #binary tree
             return self.left.search() or self.right.search()
 #Binary search tree:
 # O(log n) because we wouldnt search the left side if target is larger than self.num
+
